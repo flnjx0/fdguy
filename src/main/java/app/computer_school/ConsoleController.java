@@ -6,47 +6,76 @@ import java.util.Scanner;
 
 public class ConsoleController
 {
-    public void run()
-    {
-        Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner;
 
+    public ConsoleController()
+    {
+        this.scanner = new Scanner(System.in);
+    }
+
+    public void run() {
+        this.printWelcome();
+
+        boolean shouldRun = true;
+
+        while (shouldRun) {
+
+            System.out.println("Menu:");
+
+            String[] userItem = {"user", "User administration section"};
+            String[] bookItem = {"book", "Book administration section"};
+
+            ArrayList<String[]> menuItemsCollection = new ArrayList<String[]>();
+            menuItemsCollection.add(userItem);
+            menuItemsCollection.add(bookItem);
+
+            this.printMenuItems(menuItemsCollection);
+
+            this.printSeparator();
+
+            System.out.print("Enter the command: ");
+
+            String input = this.scanner.nextLine();
+
+            this.printSeparator();
+
+            if (this.ensureExit(input)) {
+                System.out.println("Bye!");
+
+                shouldRun = false;
+
+                break;
+            }
+
+            if (!this.checkMenuItems(menuItemsCollection, input)) {
+                System.out.println("Entered command is invalid: " + input);
+
+                this.printSeparator();
+
+                return;
+            }
+
+            System.out.println("Entered command: " + input);
+
+            this.printSeparator();
+        }
+
+
+    }
+
+    private void printWelcome()
+    {
         String welcome = """
         |---------------------------------------------------------------|
         |------------------Welcome to the club, buddy!------------------|
         |---------------------------------------------------------------|""";
 
         System.out.println(welcome);
+    }
 
-        System.out.println("Menu:");
-
-        String[] userItem = {"user", "User administration section"};
-        String[] bookItem = {"book", "Book administration section"};
-
-        ArrayList<String[]> menuItemsCollection = new ArrayList<>();
-        menuItemsCollection.add(userItem);
-        menuItemsCollection.add(bookItem);
-
-        for (String[] item : menuItemsCollection) {
-            System.out.println(String.format(
-                    "%s:  %s",
-                    item[0],
-                    item[1]
-            ));
-        }
-
+    private void printSeparator()
+    {
         System.out.println("|---------------------------------------------------------------|");
-
-        System.out.print("Enter the command: ");
-
-        String input = scanner.nextLine();
-
-        if (!this.checkMenuItems(menuItemsCollection, input)) {
-            System.out.println("Entered command is invalid: " + input);
-
-            return;
-        }
-
-        System.out.println("Entered command: " + input);
     }
 
     private boolean checkMenuItems(ArrayList<String[]> menuItems, String searchItem)
@@ -58,5 +87,23 @@ public class ConsoleController
         }
 
         return false;
+    }
+
+    private void printMenuItems(ArrayList<String[]> menuItems)
+    {
+        for (String[] item : menuItems) {
+            System.out.println(
+                    String.format(
+                            "%s:  %s",
+                            item[0],
+                            item[1]
+                    )
+            );
+        }
+    }
+
+    private boolean ensureExit(String input)
+    {
+        return input.equals("exit");
     }
 }
