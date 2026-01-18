@@ -13,17 +13,8 @@ import java.util.Set;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String args[]) {
-        //ConsoleController controller = new ConsoleController();
+        ConsoleController controller = new ConsoleController();
 
-        //controller.run();
-
-        Dotenv dotenv = Dotenv.load();
-
-        System.out.println(dotenv.get("DATABASE_HOST"));
-        System.out.println(dotenv.get("DATABASE_PORT"));
-        System.out.println(dotenv.get("DATABASE_DB"));
-        System.out.println(dotenv.get("DATABASE_USER"));
-        System.out.println(dotenv.get("DATABASE_PASSWORD"));
-
+        controller.run();
     }
 }
